@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICF-SL · FinanceManager</title>
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- header – navy blue ----- */
+        .header {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+        }
+
+        .header-title {
+            font-weight: 500;
+            font-size: 1.9rem;
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.85;
+            letter-spacing: 0.4px;
+            margin-top: 0.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 0.4rem;
+            width: 100%;
+        }
+
+        /* ----- main content – plain white body, two navy cards ----- */
+        .main-content {
+            flex: 1 0 auto;
+            background-color: #ffffff;
+            padding: 2.5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* card grid – two cards side by side */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.8rem;
+            align-items: stretch;
+        }
+
+        /* each card – navy blue theme, now clickable */
+        .card {
+            background: #1a2a4a;
+            border-radius: 20px;
+            border: 1px solid #2c3f5e;
+            box-shadow: 0 6px 20px rgba(26, 42, 74, 0.15);
+            padding: 2rem 1.8rem;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            color: #ffffff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 28px rgba(26, 42, 74, 0.25);
+        }
+
+        /* card header – subtle white border */
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 0.9rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .card-header .icon {
+            font-size: 1.6rem;
+            line-height: 1;
+        }
+
+        .card-header h2 {
+            font-weight: 500;
+            font-size: 1.3rem;
+            color: #ffffff;
+            letter-spacing: -0.2px;
+        }
+
+        /* card body */
+        .card-body {
+            flex: 1;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .card-placeholder {
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 14px;
+            padding: 1.5rem 1.4rem;
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            color: rgba(255, 255, 255, 0.7);
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        /* small arrow indicator */
+        .card-arrow {
+            margin-top: 0.8rem;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.4);
+            text-align: right;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            padding-top: 0.8rem;
+            transition: color 0.2s ease;
+        }
+
+        .card:hover .card-arrow {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* logout link */
+        .logout-link {
+            display: inline-block;
+            margin-top: 2rem;
+            color: #1a2a4a;
+            text-decoration: none;
+            font-size: 0.9rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #1a2a4a;
+            border-radius: 8px;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .logout-link:hover {
+            background: #1a2a4a;
+            color: #ffffff;
+        }
+
+        /* responsive – stack cards on smaller screens */
+        @media (max-width: 720px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .main-content {
+                padding: 1.5rem 1.2rem;
+            }
+            .card {
+                padding: 1.5rem 1.2rem;
+            }
+            .card-header h2 {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ----- footer – navy blue ----- */
+        .footer {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.2rem 2rem;
+            margin-top: auto;
+            flex-shrink: 0;
+            border-top: 1px solid #2c3f5e;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-inner span {
+            opacity: 0.9;
+        }
+
+        /* responsive header & footer */
+        @media (max-width: 600px) {
+            .header {
+                padding: 1rem 1.2rem;
+            }
+            .header-title {
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+            .header-subtitle {
+                font-size: 0.95rem;
+                padding-top: 0.3rem;
+            }
+            .footer {
+                padding: 0.9rem 1rem;
+            }
+            .footer-inner {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+            .header-subtitle {
+                font-size: 0.8rem;
+            }
+            .card-placeholder {
+                padding: 1rem 0.8rem;
+                min-height: 70px;
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-title">INFORMATICS CONSULTANCY FIRM SIERRA LEONE</div>
+            <div class="header-subtitle">Financial Management System</div>
+        </div>
+    </header>
+
+    <!-- BODY: two navy cards, linked to respective pages -->
+    <main class="main-content">
+        <div class="cards-grid">
+
+            <!-- Card: Data Entry → links to data.html -->
+            <a href="data.html" class="card">
+                <div class="card-header">
+                    <span class="icon">📋</span>
+                    <h2>Data Entry</h2>
+                </div>
+                <div class="card-body">
+                    <div class="card-placeholder">
+                        ✏️ Form fields will appear here
+                    </div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+
+            <!-- Card: Financial Reports → links to fin.html -->
+            <a href="fin.html" class="card">
+                <div class="card-header">
+                    <span class="icon">📊</span>
+                    <h2>Financial Reports</h2>
+                </div>
+                <div class="card-body">
+                    <div class="card-placeholder">
+                        📈 Charts and tables will be rendered here
+                    </div>
+                </div>
+                <div class="card-arrow">→</div>
+            </a>
+
+        </div>
+
+        <!-- Logout link -->
+        <a href="login.html" class="logout-link">🚪 Sign Out</a>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>ICF-SL © 2026  ·  FinanceManager</span>
+        </div>
+    </footer>
+
+</body>
+</html>
