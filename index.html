@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICF-SL · Welcome</title>
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #0d1a2e;
+            color: #ffffff;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ----- animated background with computer theme ----- */
+        .bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: radial-gradient(ellipse at center, #13263f 0%, #0a1525 100%);
+            overflow: hidden;
+        }
+
+        /* floating code characters */
+        .code-float {
+            position: absolute;
+            color: rgba(100, 200, 255, 0.08);
+            font-family: 'Courier New', monospace;
+            font-size: 1.2rem;
+            font-weight: 300;
+            pointer-events: none;
+            animation: floatUp linear infinite;
+            white-space: nowrap;
+            letter-spacing: 2px;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(5deg);
+                opacity: 0;
+            }
+        }
+
+        /* animated grid lines (circuit board style) */
+        .grid-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background-image: 
+                linear-gradient(rgba(60, 140, 220, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(60, 140, 220, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            animation: gridPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes gridPulse {
+            0% {
+                opacity: 0.3;
+                background-size: 60px 60px;
+            }
+            100% {
+                opacity: 0.8;
+                background-size: 70px 70px;
+            }
+        }
+
+        /* animated floating binary particles */
+        .binary-particle {
+            position: absolute;
+            color: rgba(0, 200, 255, 0.06);
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            pointer-events: none;
+            animation: binaryFloat 15s linear infinite;
+        }
+
+        @keyframes binaryFloat {
+            0% {
+                transform: translateY(100vh) translateX(0px) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-20vh) translateX(100px) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        /* glowing orb */
+        .glow-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            pointer-events: none;
+            animation: orbPulse 6s ease-in-out infinite alternate;
+        }
+
+        .glow-orb.orb1 {
+            width: 300px;
+            height: 300px;
+            background: rgba(30, 100, 200, 0.15);
+            top: -10%;
+            right: -5%;
+            animation-delay: 0s;
+        }
+
+        .glow-orb.orb2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(0, 200, 255, 0.08);
+            bottom: -15%;
+            left: -10%;
+            animation-delay: 3s;
+        }
+
+        @keyframes orbPulse {
+            0% {
+                transform: scale(0.8) translate(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(1.2) translate(30px, -30px);
+                opacity: 1;
+            }
+        }
+
+        /* ----- main content – centered cover card ----- */
+        .main-content {
+            flex: 1 0 auto;
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        /* cover card – glassmorphism style */
+        .cover-card {
+            background: rgba(26, 42, 74, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 32px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 3.5rem 4rem;
+            max-width: 580px;
+            width: 100%;
+            text-align: center;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .cover-card .logo-icon {
+            font-size: 3.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .cover-card h1 {
+            font-weight: 600;
+            font-size: 1.8rem;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .cover-card .tagline {
+            font-weight: 300;
+            font-size: 1rem;
+            opacity: 0.6;
+            margin-bottom: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .cover-card .description {
+            font-weight: 300;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            line-height: 1.6;
+            margin-bottom: 2.2rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* get started button */
+        .btn-get-started {
+            display: inline-block;
+            padding: 0.9rem 3rem;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #ffffff 0%, #e8edf5 100%);
+            color: #1a2a4a;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .btn-get-started:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .btn-get-started:active {
+            transform: scale(0.97);
+        }
+
+        /* footer */
+        .footer {
+            position: relative;
+            z-index: 1;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.3);
+            padding: 1.2rem 2rem;
+            margin-top: auto;
+            flex-shrink: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .footer span {
+            opacity: 0.6;
+        }
+
+        /* responsive */
+        @media (max-width: 600px) {
+            .cover-card {
+                padding: 2.5rem 1.8rem;
+                margin: 1rem;
+            }
+            .cover-card h1 {
+                font-size: 1.4rem;
+            }
+            .cover-card .logo-icon {
+                font-size: 2.8rem;
+            }
+            .btn-get-started {
+                padding: 0.8rem 2.2rem;
+                font-size: 0.9rem;
+            }
+            .cover-card .description {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .cover-card {
+                padding: 2rem 1.2rem;
+            }
+            .cover-card h1 {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+    <div class="bg-canvas">
+        <!-- grid lines -->
+        <div class="grid-lines"></div>
+
+        <!-- glowing orbs -->
+        <div class="glow-orb orb1"></div>
+        <div class="glow-orb orb2"></div>
+
+        <!-- floating code characters -->
+        <div class="code-float" style="left: 5%; animation-duration: 18s; animation-delay: 0s;">&lt;/&gt;</div>
+        <div class="code-float" style="left: 15%; animation-duration: 22s; animation-delay: 2s;">{ }</div>
+        <div class="code-float" style="left: 25%; animation-duration: 16s; animation-delay: 4s;">[ ]</div>
+        <div class="code-float" style="left: 35%; animation-duration: 20s; animation-delay: 1s;">&lt;div&gt;</div>
+        <div class="code-float" style="left: 45%; animation-duration: 24s; animation-delay: 3s;">function()</div>
+        <div class="code-float" style="left: 55%; animation-duration: 19s; animation-delay: 5s;">const</div>
+        <div class="code-float" style="left: 65%; animation-duration: 21s; animation-delay: 0.5s;">=&gt;</div>
+        <div class="code-float" style="left: 75%; animation-duration: 17s; animation-delay: 2.5s;">class</div>
+        <div class="code-float" style="left: 85%; animation-duration: 23s; animation-delay: 3.5s;">&lt;/&gt;</div>
+        <div class="code-float" style="left: 92%; animation-duration: 20s; animation-delay: 1.5s;">{ }</div>
+
+        <!-- binary particles -->
+        <div class="binary-particle" style="left: 8%; animation-duration: 14s; animation-delay: 0s;">010101</div>
+        <div class="binary-particle" style="left: 20%; animation-duration: 18s; animation-delay: 3s;">101010</div>
+        <div class="binary-particle" style="left: 32%; animation-duration: 16s; animation-delay: 6s;">110011</div>
+        <div class="binary-particle" style="left: 44%; animation-duration: 20s; animation-delay: 2s;">001100</div>
+        <div class="binary-particle" style="left: 56%; animation-duration: 15s; animation-delay: 5s;">010101</div>
+        <div class="binary-particle" style="left: 68%; animation-duration: 19s; animation-delay: 1s;">101010</div>
+        <div class="binary-particle" style="left: 80%; animation-duration: 17s; animation-delay: 4s;">110011</div>
+        <div class="binary-particle" style="left: 92%; animation-duration: 21s; animation-delay: 2.5s;">001100</div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="cover-card">
+            <span class="logo-icon">🏦</span>
+            <h1>INFORMATICS CONSULTANCY FIRM</h1>
+            <div class="tagline">SIERRA LEONE · Financial Management System</div>
+            <div class="description">
+                Secure, efficient, and intelligent financial management.<br />
+                Access your dashboard with a single click.
+            </div>
+            <a href="login.html" class="btn-get-started">🚀 Get Started</a>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <span>ICF-SL © 2026  ·  FinanceManager</span>
+    </footer>
+
+</body>
+</html>
