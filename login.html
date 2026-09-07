@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICF-SL · Login</title>
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- header – navy blue ----- */
+        .header {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+        }
+
+        .header-title {
+            font-weight: 500;
+            font-size: 1.9rem;
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.85;
+            letter-spacing: 0.4px;
+            margin-top: 0.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 0.4rem;
+            width: 100%;
+        }
+
+        /* ----- main content – centered login card ----- */
+        .main-content {
+            flex: 1 0 auto;
+            background-color: #ffffff;
+            padding: 2.5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* login card – navy blue */
+        .login-card {
+            background: #1a2a4a;
+            border-radius: 24px;
+            border: 1px solid #2c3f5e;
+            box-shadow: 0 8px 30px rgba(26, 42, 74, 0.2);
+            padding: 2.5rem 2.8rem;
+            max-width: 420px;
+            width: 100%;
+            color: #ffffff;
+        }
+
+        .login-card .lock-icon {
+            font-size: 2.2rem;
+            text-align: center;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-card h2 {
+            font-weight: 500;
+            font-size: 1.5rem;
+            text-align: center;
+            margin-bottom: 0.3rem;
+            color: #ffffff;
+        }
+
+        .login-card .sub {
+            text-align: center;
+            font-size: 0.85rem;
+            opacity: 0.6;
+            margin-bottom: 1.8rem;
+            font-weight: 300;
+        }
+
+        /* form group */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 400;
+            opacity: 0.8;
+            margin-bottom: 0.3rem;
+            letter-spacing: 0.2px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.06);
+            color: #ffffff;
+            font-size: 1rem;
+            transition: border-color 0.2s ease, background 0.2s ease;
+            outline: none;
+            font-family: inherit;
+        }
+
+        .form-group input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            font-weight: 300;
+        }
+
+        .form-group input:focus {
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* login button */
+        .login-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 10px;
+            background: #ffffff;
+            color: #1a2a4a;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, transform 0.1s ease;
+            font-family: inherit;
+            margin-top: 0.3rem;
+        }
+
+        .login-btn:hover {
+            background: #f0f3f7;
+        }
+
+        .login-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* error message */
+        .error-msg {
+            background: rgba(255, 80, 80, 0.15);
+            border: 1px solid rgba(255, 80, 80, 0.25);
+            color: #ff8a8a;
+            padding: 0.6rem 1rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            text-align: center;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .error-msg.visible {
+            display: block;
+        }
+
+        /* ----- footer – navy blue ----- */
+        .footer {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.2rem 2rem;
+            margin-top: auto;
+            flex-shrink: 0;
+            border-top: 1px solid #2c3f5e;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-inner span {
+            opacity: 0.9;
+        }
+
+        /* responsive */
+        @media (max-width: 600px) {
+            .header {
+                padding: 1rem 1.2rem;
+            }
+            .header-title {
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+            .header-subtitle {
+                font-size: 0.95rem;
+                padding-top: 0.3rem;
+            }
+            .main-content {
+                padding: 1.5rem 1.2rem;
+            }
+            .login-card {
+                padding: 2rem 1.5rem;
+            }
+            .login-card h2 {
+                font-size: 1.3rem;
+            }
+            .footer {
+                padding: 0.9rem 1rem;
+            }
+            .footer-inner {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+            .header-subtitle {
+                font-size: 0.8rem;
+            }
+            .login-card {
+                padding: 1.5rem 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-title">INFORMATICS CONSULTANCY FIRM SIERRA LEONE</div>
+            <div class="header-subtitle">Financial Management System</div>
+        </div>
+    </header>
+
+    <!-- MAIN: login card -->
+    <main class="main-content">
+        <div class="login-card">
+            <span class="lock-icon">🔐</span>
+            <h2>Sign In</h2>
+            <div class="sub">Enter your credentials to continue</div>
+
+            <!-- error message (hidden by default) -->
+            <div class="error-msg" id="errorMsg">Invalid username or password.</div>
+
+            <!-- login form -->
+            <form id="loginForm" autocomplete="off">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" placeholder="Enter username" required />
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" placeholder="Enter password" required />
+                </div>
+                <button type="submit" class="login-btn">Sign In</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>ICF-SL © 2026  ·  FinanceManager</span>
+        </div>
+    </footer>
+
+    <!-- LOGIN SCRIPT -->
+    <script>
+        (function() {
+            const form = document.getElementById('loginForm');
+            const errorMsg = document.getElementById('errorMsg');
+            const usernameInput = document.getElementById('username');
+            const passwordInput = document.getElementById('password');
+
+            // Hardcoded credentials (private – not displayed anywhere)
+            const VALID_USERNAME = 'Admin';
+            const VALID_PASSWORD = 'Admin123';
+
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                const username = usernameInput.value.trim();
+                const password = passwordInput.value.trim();
+
+                // Check credentials
+                if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                    // Success – redirect to landing page
+                    window.location.href = 'landing.html';
+                } else {
+                    // Show error
+                    errorMsg.classList.add('visible');
+                    // Clear password field for security
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            });
+
+            // Clear error when user starts typing
+            usernameInput.addEventListener('input', function() {
+                errorMsg.classList.remove('visible');
+            });
+            passwordInput.addEventListener('input', function() {
+                errorMsg.classList.remove('visible');
+            });
+        })();
+    </script>
+
+</body>
+</html>
