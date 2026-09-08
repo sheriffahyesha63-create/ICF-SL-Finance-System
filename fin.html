@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ICF-SL · Financial Reports</title>
+    <style>
+        /* ----- reset & base ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #1a1a1a;
+            font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ----- header – navy blue ----- */
+        .header {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.5rem 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.2rem;
+        }
+
+        .header-title {
+            font-weight: 500;
+            font-size: 1.9rem;
+            letter-spacing: -0.2px;
+            line-height: 1.2;
+        }
+
+        .header-subtitle {
+            font-weight: 300;
+            font-size: 1.1rem;
+            opacity: 0.85;
+            letter-spacing: 0.4px;
+            margin-top: 0.1rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            padding-top: 0.4rem;
+            width: 100%;
+        }
+
+        /* navigation breadcrumb */
+        .nav-breadcrumb {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 0.8rem 2rem 0;
+            font-size: 0.85rem;
+            color: #6a7b8c;
+        }
+
+        .nav-breadcrumb a {
+            color: #1a2a4a;
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.2s ease;
+        }
+
+        .nav-breadcrumb a:hover {
+            opacity: 1;
+        }
+
+        .nav-breadcrumb span {
+            opacity: 0.4;
+            margin: 0 0.3rem;
+        }
+
+        .nav-breadcrumb .current {
+            opacity: 0.6;
+            font-weight: 500;
+        }
+
+        /* back button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.5rem 1.2rem;
+            border: 1px solid #1a2a4a;
+            border-radius: 10px;
+            background: transparent;
+            color: #1a2a4a;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+            font-family: inherit;
+            margin-bottom: 1.2rem;
+        }
+
+        .back-btn:hover {
+            background: #1a2a4a;
+            color: #ffffff;
+        }
+
+        .back-btn .arrow {
+            font-size: 1rem;
+        }
+
+        /* ----- main content ----- */
+        .main-content {
+            flex: 1 0 auto;
+            background-color: #ffffff;
+            padding: 1.5rem 2rem 2.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: #1a2a4a;
+            margin-bottom: 1.8rem;
+            letter-spacing: -0.2px;
+        }
+
+        .page-title span {
+            opacity: 0.5;
+            font-weight: 300;
+        }
+
+        /* ----- summary cards ----- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .summary-card {
+            background: #1a2a4a;
+            border-radius: 16px;
+            padding: 1.2rem 1.5rem;
+            color: #ffffff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26, 42, 74, 0.2);
+        }
+
+        .summary-card .label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            opacity: 0.6;
+            font-weight: 300;
+        }
+
+        .summary-card .value {
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-top: 0.2rem;
+        }
+
+        .summary-card .sub {
+            font-size: 0.8rem;
+            opacity: 0.5;
+            margin-top: 0.1rem;
+        }
+
+        .summary-card.income .value {
+            color: #7ddfa0;
+        }
+
+        .summary-card.expenses .value {
+            color: #ff8a8a;
+        }
+
+        .summary-card.balance .value {
+            color: #ffd700;
+        }
+
+        .summary-card.count .value {
+            color: #87ceeb;
+        }
+
+        /* ----- filter bar ----- */
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem 1.5rem;
+            background: #f8f9fb;
+            border-radius: 14px;
+            border: 1px solid #eef1f5;
+        }
+
+        .filter-bar label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #1a2a4a;
+            opacity: 0.7;
+        }
+
+        .filter-bar input,
+        .filter-bar select {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            border: 1px solid #d8dfe8;
+            font-size: 0.9rem;
+            outline: none;
+            font-family: inherit;
+            background: #ffffff;
+        }
+
+        .filter-bar input:focus,
+        .filter-bar select:focus {
+            border-color: #1a2a4a;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            background: #1a2a4a;
+            color: #ffffff;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-family: inherit;
+        }
+
+        .filter-btn:hover {
+            background: #2c3f5e;
+        }
+
+        .filter-btn.reset {
+            background: #6c757d;
+        }
+
+        .filter-btn.reset:hover {
+            background: #5a6268;
+        }
+
+        /* ----- charts section ----- */
+        .charts-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #eef1f5;
+            padding: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        .chart-card h4 {
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1a2a4a;
+            margin-bottom: 0.8rem;
+            border-bottom: 1px solid #f0f2f5;
+            padding-bottom: 0.6rem;
+        }
+
+        .chart-placeholder {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+            background: #fafbfc;
+            border-radius: 10px;
+            border: 1px dashed #d8dfe8;
+            color: #8a9aa8;
+            font-size: 0.9rem;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .chart-placeholder .big-icon {
+            font-size: 2.5rem;
+            opacity: 0.3;
+        }
+
+        /* ----- transaction table ----- */
+        .transactions-section {
+            margin-top: 0.5rem;
+        }
+
+        .transactions-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .transactions-header h3 {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #1a2a4a;
+        }
+
+        .transactions-header h3 span {
+            opacity: 0.5;
+            font-weight: 300;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            border-radius: 16px;
+            border: 1px solid #eef1f5;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        thead {
+            background: #1a2a4a;
+            color: #ffffff;
+        }
+
+        thead th {
+            padding: 0.8rem 1rem;
+            text-align: left;
+            font-weight: 500;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f0f2f5;
+            transition: background 0.15s ease;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fb;
+        }
+
+        tbody td {
+            padding: 0.8rem 1rem;
+            color: #2e3f52;
+            vertical-align: middle;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .type-badge.income {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .type-badge.expense {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .type-badge.cancelled {
+            background: #e2e3e5;
+            color: #383d41;
+            text-decoration: line-through;
+        }
+
+        .amount-positive {
+            color: #155724;
+            font-weight: 600;
+        }
+
+        .amount-negative {
+            color: #721c24;
+            font-weight: 600;
+        }
+
+        .no-records {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            color: #8a9aa8;
+            font-size: 0.95rem;
+        }
+
+        /* responsive */
+        @media (max-width: 992px) {
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 820px) {
+            .main-content {
+                padding: 1rem 1.2rem 1.8rem;
+            }
+            .nav-breadcrumb {
+                padding: 0.6rem 1.2rem 0;
+                font-size: 0.8rem;
+            }
+            .page-title {
+                font-size: 1.2rem;
+                margin-bottom: 1.2rem;
+            }
+            .back-btn {
+                font-size: 0.8rem;
+                padding: 0.4rem 1rem;
+            }
+            .filter-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .filter-bar input,
+            .filter-bar select {
+                width: 100%;
+            }
+            thead th,
+            tbody td {
+                padding: 0.6rem 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            .header {
+                padding: 1rem 1.2rem;
+            }
+            .header-title {
+                font-size: 1.4rem;
+                line-height: 1.2;
+            }
+            .header-subtitle {
+                font-size: 0.95rem;
+                padding-top: 0.3rem;
+            }
+            .footer {
+                padding: 0.9rem 1rem;
+            }
+            .footer-inner {
+                font-size: 0.85rem;
+            }
+            .summary-card .value {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+            .header-subtitle {
+                font-size: 0.8rem;
+            }
+        }
+
+        /* ----- footer – navy blue ----- */
+        .footer {
+            background-color: #1a2a4a;
+            color: white;
+            padding: 1.2rem 2rem;
+            margin-top: auto;
+            flex-shrink: 0;
+            border-top: 1px solid #2c3f5e;
+        }
+
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 300;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-inner span {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-title">INFORMATICS CONSULTANCY FIRM SIERRA LEONE</div>
+            <div class="header-subtitle">Financial Management System</div>
+        </div>
+    </header>
+
+    <!-- BREADCRUMB -->
+    <div class="nav-breadcrumb">
+        <a href="landing.html">🏠 Home</a>
+        <span>›</span>
+        <span class="current">Financial Reports</span>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <!-- BACK BUTTON -->
+        <a href="landing.html" class="back-btn">
+            <span class="arrow">←</span> Back to Dashboard
+        </a>
+
+        <div class="page-title">
+            Financial Reports <span>· Overview &amp; Analysis</span>
+        </div>
+
+        <!-- SUMMARY CARDS -->
+        <div class="summary-grid" id="summaryGrid">
+            <div class="summary-card income">
+                <div class="label">Total Income</div>
+                <div class="value" id="totalIncome">Le 0.00</div>
+                <div class="sub">All income records</div>
+            </div>
+            <div class="summary-card expenses">
+                <div class="label">Total Expenses</div>
+                <div class="value" id="totalExpenses">Le 0.00</div>
+                <div class="sub">All expense records</div>
+            </div>
+            <div class="summary-card balance">
+                <div class="label">Net Balance</div>
+                <div class="value" id="netBalance">Le 0.00</div>
+                <div class="sub">Income − Expenses</div>
+            </div>
+            <div class="summary-card count">
+                <div class="label">Total Transactions</div>
+                <div class="value" id="totalTransactions">0</div>
+                <div class="sub">Combined records</div>
+            </div>
+        </div>
+
+        <!-- FILTER BAR -->
+        <div class="filter-bar">
+            <label for="filterType">Type:</label>
+            <select id="filterType">
+                <option value="all">All</option>
+                <option value="income">Income</option>
+                <option value="expense">Expenses</option>
+            </select>
+            <label for="filterDateFrom">From:</label>
+            <input type="date" id="filterDateFrom" />
+            <label for="filterDateTo">To:</label>
+            <input type="date" id="filterDateTo" />
+            <button class="filter-btn" id="applyFilter">Apply Filter</button>
+            <button class="filter-btn reset" id="resetFilter">Reset</button>
+        </div>
+
+        <!-- CHARTS SECTION -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h4>📊 Income vs Expenses</h4>
+                <div class="chart-placeholder" id="incomeExpenseChart">
+                    <span class="big-icon">📈</span>
+                    <span>Loading chart data...</span>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h4>🧩 Transaction Distribution</h4>
+                <div class="chart-placeholder" id="distributionChart">
+                    <span class="big-icon">🍩</span>
+                    <span>Loading chart data...</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- TRANSACTIONS TABLE -->
+        <div class="transactions-section">
+            <div class="transactions-header">
+                <h3>📋 Transaction History <span>· All records</span></h3>
+                <div style="font-size: 0.85rem; color: #6a7b8c;">
+                    Showing <span id="recordCount">0</span> records
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Time</th>
+                            <th>Type</th>
+                            <th>Description / Source</th>
+                            <th>Amount (Le)</th>
+                            <th>Status</th>
+                            <th>By / Authorized</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recordsBody">
+                        <!-- Records will be inserted here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="noRecords" class="no-records">No transactions found. Start by adding income or expense records.</div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <span>ICF-SL © 2026  ·  FinanceManager</span>
+        </div>
+    </footer>
+
+    <script>
+        (function() {
+            // Load records from localStorage
+            const incomeRecords = JSON.parse(localStorage.getItem('incomeRecords')) || [];
+            const expenseRecords = JSON.parse(localStorage.getItem('expenseRecords')) || [];
+
+            // DOM elements
+            const recordsBody = document.getElementById('recordsBody');
+            const noRecords = document.getElementById('noRecords');
+            const recordCount = document.getElementById('recordCount');
+            const totalIncomeEl = document.getElementById('totalIncome');
+            const totalExpensesEl = document.getElementById('totalExpenses');
+            const netBalanceEl = document.getElementById('netBalance');
+            const totalTransactionsEl = document.getElementById('totalTransactions');
+
+            const filterType = document.getElementById('filterType');
+            const filterDateFrom = document.getElementById('filterDateFrom');
+            const filterDateTo = document.getElementById('filterDateTo');
+            const applyFilter = document.getElementById('applyFilter');
+            const resetFilter = document.getElementById('resetFilter');
+
+            // Helper: format currency
+            function formatCurrency(amount) {
+                return 'Le ' + amount.toFixed(2);
+            }
+
+            // Get all transactions with type
+            function getAllTransactions() {
+                const income = incomeRecords
+                    .filter(r => !r.cancelled)
+                    .map(r => ({
+                        ...r,
+                        type: 'income',
+                        displayType: 'Income',
+                        description: r.source || r.details || 'Income',
+                        amount: r.amount || 0,
+                        byWhom: r.source || '—',
+                        authorizedBy: '—',
+                        method: '—',
+                        status: r.status || 'Fully Paid'
+                    }));
+
+                const expenses = expenseRecords
+                    .filter(r => !r.cancelled)
+                    .map(r => ({
+                        ...r,
+                        type: 'expense',
+                        displayType: 'Expense',
+                        description: r.description || 'Expense',
+                        amount: -(r.amount || 0),
+                        byWhom: r.byWhom || '—',
+                        authorizedBy: r.authorizedBy || '—',
+                        method: r.method || '—',
+                        status: 'Paid'
+                    }));
+
+                return [...income, ...expenses].sort((a, b) => {
+                    const dateA = new Date(a.date + ' ' + (a.time || '00:00'));
+                    const dateB = new Date(b.date + ' ' + (b.time || '00:00'));
+                    return dateB - dateA;
+                });
+            }
+
+            // Calculate summary
+            function calculateSummary(transactions) {
+                let totalIncome = 0;
+                let totalExpenses = 0;
+
+                transactions.forEach(t => {
+                    if (t.type === 'income') {
+                        totalIncome += t.amount;
+                    } else if (t.type === 'expense') {
+                        totalExpenses += Math.abs(t.amount);
+                    }
+                });
+
+                return {
+                    totalIncome,
+                    totalExpenses,
+                    netBalance: totalIncome - totalExpenses,
+                    count: transactions.length
+                };
+            }
+
+            // Render records
+            function renderRecords(filter = 'all', dateFrom = '', dateTo = '') {
+                let transactions = getAllTransactions();
+
+                // Apply type filter
+                if (filter !== 'all') {
+                    transactions = transactions.filter(t => t.type === filter);
+                }
+
+                // Apply date filter
+                if (dateFrom) {
+                    const from = new Date(dateFrom);
+                    transactions = transactions.filter(t => new Date(t.date) >= from);
+                }
+                if (dateTo) {
+                    const to = new Date(dateTo);
+                    to.setHours(23, 59, 59, 999);
+                    transactions = transactions.filter(t => new Date(t.date) <= to);
+                }
+
+                // Update summary
+                const summary = calculateSummary(transactions);
+                totalIncomeEl.textContent = formatCurrency(summary.totalIncome);
+                totalExpensesEl.textContent = formatCurrency(summary.totalExpenses);
+                netBalanceEl.textContent = formatCurrency(summary.netBalance);
+                totalTransactionsEl.textContent = summary.count;
+                recordCount.textContent = summary.count;
+
+                // Update charts
+                updateCharts(transactions);
+
+                // Render table
+                if (transactions.length === 0) {
+                    recordsBody.innerHTML = '';
+                    noRecords.style.display = 'block';
+                    return;
+                }
+
+                noRecords.style.display = 'none';
+                recordsBody.innerHTML = transactions.map(t => {
+                    const isPositive = t.amount >= 0;
+                    const amountClass = isPositive ? 'amount-positive' : 'amount-negative';
+                    const typeClass = t.type === 'income' ? 'income' : 'expense';
+                    const displayAmount = isPositive ? t.amount : Math.abs(t.amount);
+
+                    return `
+                        <tr>
+                            <td>${t.date}</td>
+                            <td>${t.time || '—'}</td>
+                            <td><span class="type-badge ${typeClass}">${t.displayType}</span></td>
+                            <td>${t.description || '—'}</td>
+                            <td class="${amountClass}">${formatCurrency(displayAmount)}</td>
+                            <td>${t.status || '—'}</td>
+                            <td>${t.type === 'income' ? t.byWhom : t.authorizedBy || '—'}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // Update charts
+            function updateCharts(transactions) {
+                const summary = calculateSummary(transactions);
+                const incomeCount = transactions.filter(t => t.type === 'income').length;
+                const expenseCount = transactions.filter(t => t.type === 'expense').length;
+
+                // Income vs Expenses Chart
+                const chart1 = document.getElementById('incomeExpenseChart');
+                const totalIncome = summary.totalIncome;
+                const totalExpenses = summary.totalExpenses;
+                const maxValue = Math.max(totalIncome, totalExpenses, 1);
+                const incomePercent = (totalIncome / maxValue * 100).toFixed(0);
+                const expensePercent = (totalExpenses / maxValue * 100).toFixed(0);
+
+                chart1.innerHTML = `
+                    <div style="width: 100%; padding: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: #155724; font-weight: 600;">Income: ${formatCurrency(totalIncome)}</span>
+                            <span style="color: #721c24; font-weight: 600;">Expenses: ${formatCurrency(totalExpenses)}</span>
+                        </div>
+                        <div style="display: flex; gap: 0.3rem; height: 30px; width: 100%; background: #f0f2f5; border-radius: 8px; overflow: hidden;">
+                            <div style="height: 100%; background: #28a745; width: ${incomePercent}%; transition: width 0.5s ease;"></div>
+                            <div style="height: 100%; background: #dc3545; width: ${expensePercent}%; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.7rem; opacity: 0.6;">
+                            <span>Income: ${incomePercent}%</span>
+                            <span>Expenses: ${expensePercent}%</span>
+                        </div>
+                    </div>
+                `;
+
+                // Distribution Chart
+                const chart2 = document.getElementById('distributionChart');
+                const total = incomeCount + expenseCount;
+                const incomePct = total > 0 ? (incomeCount / total * 100).toFixed(0) : 0;
+                const expensePct = total > 0 ? (expenseCount / total * 100).toFixed(0) : 0;
+
+                chart2.innerHTML = `
+                    <div style="width: 100%; padding: 0.5rem;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.3rem;">
+                            <span style="color: #155724; font-weight: 600;">Income: ${incomeCount} txns</span>
+                            <span style="color: #721c24; font-weight: 600;">Expenses: ${expenseCount} txns</span>
+                        </div>
+                        <div style="display: flex; gap: 0.3rem; height: 30px; width: 100%; background: #f0f2f5; border-radius: 8px; overflow: hidden;">
+                            <div style="height: 100%; background: #28a745; width: ${incomePct}%; transition: width 0.5s ease;"></div>
+                            <div style="height: 100%; background: #dc3545; width: ${expensePct}%; transition: width 0.5s ease;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 0.3rem; font-size: 0.7rem; opacity: 0.6;">
+                            <span>Income: ${incomePct}%</span>
+                            <span>Expenses: ${expensePct}%</span>
+                        </div>
+                        <div style="margin-top: 0.5rem; font-size: 0.75rem; text-align: center; opacity: 0.5;">
+                            Total Transactions: ${total}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Apply filter
+            function applyFilters() {
+                const type = filterType.value;
+                const from = filterDateFrom.value;
+                const to = filterDateTo.value;
+                renderRecords(type, from, to);
+            }
+
+            // Reset filters
+            function resetFilters() {
+                filterType.value = 'all';
+                filterDateFrom.value = '';
+                filterDateTo.value = '';
+                renderRecords('all', '', '');
+            }
+
+            // Event listeners
+            applyFilter.addEventListener('click', applyFilters);
+            resetFilter.addEventListener('click', resetFilters);
+
+            // Auto-apply on date change
+            filterDateFrom.addEventListener('change', applyFilters);
+            filterDateTo.addEventListener('change', applyFilters);
+            filterType.addEventListener('change', applyFilters);
+
+            // Initial render
+            renderRecords('all', '', '');
+        })();
+    </script>
+
+</body>
+</html>
