@@ -66,6 +66,23 @@
             width: 100%;
         }
 
+        /* welcome section */
+        .welcome-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .welcome-section h2 {
+            font-weight: 400;
+            font-size: 1.8rem;
+            color: #1a2a4a;
+        }
+
+        .welcome-section p {
+            color: #4d5e72;
+            margin-top: 0.3rem;
+            font-size: 1rem;
+        }
+
         /* card grid – two cards side by side */
         .cards-grid {
             display: grid;
@@ -74,91 +91,58 @@
             align-items: stretch;
         }
 
-        /* each card – navy blue theme, now clickable */
+        /* each card – navy blue theme, clickable */
         .card {
             background: #1a2a4a;
             border-radius: 20px;
             border: 1px solid #2c3f5e;
             box-shadow: 0 6px 20px rgba(26, 42, 74, 0.15);
-            padding: 2rem 1.8rem;
+            padding: 2.5rem 2rem;
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             color: #ffffff;
             text-decoration: none;
             cursor: pointer;
+            min-height: 220px;
+            text-align: center;
         }
 
         .card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 12px 28px rgba(26, 42, 74, 0.25);
+            transform: translateY(-6px);
+            box-shadow: 0 12px 32px rgba(26, 42, 74, 0.3);
         }
 
-        /* card header – subtle white border */
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            border-bottom: 2px solid rgba(255, 255, 255, 0.12);
-            padding-bottom: 0.9rem;
-            margin-bottom: 1.2rem;
-        }
-
-        .card-header .icon {
-            font-size: 1.6rem;
+        .card .icon {
+            font-size: 3.5rem;
             line-height: 1;
+            margin-bottom: 0.8rem;
         }
 
-        .card-header h2 {
+        .card h2 {
             font-weight: 500;
-            font-size: 1.3rem;
+            font-size: 1.6rem;
             color: #ffffff;
             letter-spacing: -0.2px;
         }
 
-        /* card body */
-        .card-body {
-            flex: 1;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
-        .card-placeholder {
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 14px;
-            padding: 1.5rem 1.4rem;
-            border: 1px dashed rgba(255, 255, 255, 0.15);
-            color: rgba(255, 255, 255, 0.7);
-            min-height: 100px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.95rem;
-            text-align: center;
-        }
-
-        /* small arrow indicator */
-        .card-arrow {
-            margin-top: 0.8rem;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.4);
-            text-align: right;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            padding-top: 0.8rem;
-            transition: color 0.2s ease;
-        }
-
-        .card:hover .card-arrow {
-            color: rgba(255, 255, 255, 0.7);
+        .card .sub-text {
+            font-weight: 300;
+            font-size: 0.9rem;
+            opacity: 0.5;
+            margin-top: 0.3rem;
         }
 
         /* logout link */
         .logout-link {
             display: inline-block;
-            margin-top: 2rem;
+            margin-top: 2.5rem;
             color: #1a2a4a;
             text-decoration: none;
             font-size: 0.9rem;
-            padding: 0.5rem 1.2rem;
+            padding: 0.5rem 1.5rem;
             border: 1px solid #1a2a4a;
             border-radius: 8px;
             transition: background 0.2s ease, color 0.2s ease;
@@ -179,10 +163,43 @@
                 padding: 1.5rem 1.2rem;
             }
             .card {
-                padding: 1.5rem 1.2rem;
+                padding: 2rem 1.5rem;
+                min-height: 160px;
             }
-            .card-header h2 {
+            .card .icon {
+                font-size: 2.8rem;
+            }
+            .card h2 {
+                font-size: 1.3rem;
+            }
+            .welcome-section h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .header-title {
+                font-size: 1.2rem;
+            }
+            .header-subtitle {
+                font-size: 0.8rem;
+            }
+            .card {
+                padding: 1.5rem 1.2rem;
+                min-height: 130px;
+            }
+            .card .icon {
+                font-size: 2.2rem;
+            }
+            .card h2 {
                 font-size: 1.1rem;
+            }
+            .welcome-section h2 {
+                font-size: 1.2rem;
+            }
+            .logout-link {
+                font-size: 0.8rem;
+                padding: 0.4rem 1.2rem;
             }
         }
 
@@ -209,7 +226,6 @@
             opacity: 0.9;
         }
 
-        /* responsive header & footer */
         @media (max-width: 600px) {
             .header {
                 padding: 1rem 1.2rem;
@@ -229,20 +245,6 @@
                 font-size: 0.85rem;
             }
         }
-
-        @media (max-width: 420px) {
-            .header-title {
-                font-size: 1.2rem;
-            }
-            .header-subtitle {
-                font-size: 0.8rem;
-            }
-            .card-placeholder {
-                padding: 1rem 0.8rem;
-                min-height: 70px;
-                font-size: 0.85rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -257,34 +259,25 @@
 
     <!-- BODY: two navy cards, linked to respective pages -->
     <main class="main-content">
+        <div class="welcome-section">
+            <h2>Welcome to your Dashboard</h2>
+            <p>Select an option below to get started.</p>
+        </div>
+
         <div class="cards-grid">
 
-            <!-- Card: Data Entry → links to data.html -->
-            <a href="data.html" class="card">
-                <div class="card-header">
-                    <span class="icon">📋</span>
-                    <h2>Data Entry</h2>
-                </div>
-                <div class="card-body">
-                    <div class="card-placeholder">
-                        ✏️ Form fields will appear here
-                    </div>
-                </div>
-                <div class="card-arrow">→</div>
+            <!-- Card: Data Entry → links to dataentry.html -->
+            <a href="dataentry.html" class="card">
+                <span class="icon">📋</span>
+                <h2>Data Entry</h2>
+                <span class="sub-text">Record income and expenses</span>
             </a>
 
             <!-- Card: Financial Reports → links to fin.html -->
             <a href="fin.html" class="card">
-                <div class="card-header">
-                    <span class="icon">📊</span>
-                    <h2>Financial Reports</h2>
-                </div>
-                <div class="card-body">
-                    <div class="card-placeholder">
-                        📈 Charts and tables will be rendered here
-                    </div>
-                </div>
-                <div class="card-arrow">→</div>
+                <span class="icon">📊</span>
+                <h2>Financial Reports</h2>
+                <span class="sub-text">View summaries and analysis</span>
             </a>
 
         </div>
